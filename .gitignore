@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 #############
 .idea
+/telegramm_bot_mp3_translater/text_translation.mp3
+/telegramm_bot_mp3_translater/src/text_file/text.txt

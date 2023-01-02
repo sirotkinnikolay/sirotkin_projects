@@ -4,6 +4,9 @@ from loader import bot
 from telebot import types
 import pathlib
 from pathlib import Path
+import gtts
+from gtts import gTTS
+from playsound import playsound
 
 language = ''
 flag_file = True
@@ -45,7 +48,6 @@ def language_selection(message):
 
 @bot.message_handler(func=lambda message: flag_text == True, content_types=['text'])
 def action_text(message):
-
     """При выборе языка переводимого текста, предоставляются кнопки для выбора варианта введения текста,
      текст можно ввести напрямую в сообщении или загрузить .txt файл с текстом для первода."""
     global language
@@ -71,8 +73,7 @@ def action_text(message):
                 downloaded_file = bot.download_file(file_info.file_path)
                 with open(folder_1, 'wb') as new_file:
                     new_file.write(downloaded_file)
-
-                bot.reply_to("Файл успешно загружен")
+                bot.send_message(message.chat.id, 'файл успешно загружен')
             except Exception as e:
                 bot.reply_to(message, e)
 
@@ -84,14 +85,22 @@ def action_text(message):
         @bot.message_handler(content_types=['text'])
         def text_write(message):
             global flag_text
+            global language
             while not flag_text:
                 folder_2 = Path(file_path() + 'text_file')
                 filepath = os.path.join(folder_2, "text.txt")
-                bot.send_message(message.chat.id, message.text)
+
+                mp3_path = os.path.abspath(os.path.join("text_translation.mp3"))
+                mp3_file = gtts.gTTS(message.text, lang=language, slow=False)
+                mp3_file.save('text_translation.mp3')
+
                 with open(filepath, 'w') as file:
                     file.write(message.text)
                     flag_text = True
+                bot.send_audio(message.from_user.id,
+                               audio=open(mp3_path, 'rb'))
                 bot.send_message(message.chat.id, reply_markup=types.ReplyKeyboardRemove())
+
 
     else:
         bot.send_message(message.chat.id, 'Вас приветствует бот для перевода текста и прослушивания его.'
