@@ -73,7 +73,14 @@ def action_text(message):
                 downloaded_file = bot.download_file(file_info.file_path)
                 with open(folder_1, 'wb') as new_file:
                     new_file.write(downloaded_file)
-                bot.send_message(message.chat.id, 'файл успешно загружен')
+                with open(folder_1, 'r') as tx:
+                    one = tx.read()
+                mp3_file = gtts.gTTS(one, lang=language, slow=False)
+                mp3_file.save('text_file_translation.mp3')
+                mp3_path = os.path.abspath(os.path.join("text_file_translation.mp3"))
+                bot.send_audio(message.from_user.id,
+                               audio=open(mp3_path, 'rb'))
+
             except Exception as e:
                 bot.reply_to(message, e)
 
