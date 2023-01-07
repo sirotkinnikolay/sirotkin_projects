@@ -28,9 +28,11 @@
 
 
 2. Установите необходимые библиотеки
-#```pip install gTTS```
-#```pip install pyttsx3 ```
-#```pip install pyTelegramBotAPI```
+```pip install gTTS```, 
+```pip install pyttsx3 ```,
+```pip install pyTelegramBotAPI```
+или командой ```pip3 install -r requirements.txt``` для версий python 3.x 
+и ```pip install -r requirements.txt``` для python 2.x
 
 
 4. Создайте в папке файл config.py и добавьте туда :
