@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    {% for n in object_list %}
+        <title>ТОВАРЫ</title>
+    {% endfor %}
+</head>
+<body>
+        <form ALIGN='right' action="/">
+            <button style="height:20px;width:100px" type="submit">ГЛАВНАЯ </button>
+        </form>
+        <form ALIGN='right' action="/category">
+            <button style="height:20px;width:100px" type="submit">КАТЕГОРИИ </button>
+        </form>
+    {% for n in object_list %}
+        <table cellspacing="2" cellpadding="5" bgcolor="blue">
+            <tr bgcolor="yellow">
+                <td width="500">ТОВАР:</td>
+                <td width="500">{{n.products}}</td>
+            </tr>
+            <tr bgcolor="white">
+                <td width="500">АРТИКУЛ:</td>
+                <td width="500">{{n.article}}</td>
+            </tr>
+            <tr bgcolor="white">
+                <td width="100">ДАТА ДОБАВЛЕНИЯ:</td>
+                <td width="100">{{n.create_at}}</td>
+            </tr>
+        </table>
+
+        <table cellspacing="2" cellpadding="10" bgcolor="blue">
+            <tr bgcolor="white">
+                <td width="490">МОСКВА: ШТ.</td>
+                <td width="490">{{n.mos_count}}</td>
+                {% if request.user.is_authenticated %}
+                <td width="100"><form ALIGN='right' action="/category_product/{{n.group_product_id}}/{{n.pk}}/moscow">
+                        <button style="height:25px;width:150px" type="submit">РЕДАКТИРОВАТЬ </button>
+                {% endif %}
+                </form>
+                </td>
+            </tr>
+            <tr bgcolor="white">
+                <td width="100">САНКТ-ПЕТЕРБУРГ: ШТ.</td>
+                <td width="490">{{n.spd_count}}</td>
+                {% if request.user.is_authenticated %}
+                <td width="100"><form ALIGN='right' action="/category_product/{{n.group_product_id}}/{{n.pk}}/spb">
+                        <button style="height:25px;width:150px" type="submit">РЕДАКТИРОВАТЬ </button>
+                {% endif %}
+                </form>
+                </td>
+            </tr>
+        </table>
+                <form action="/category_product/{{n.group_product_id}}/{{n.pk}}">
+                        <button style="height:20px;width:150px" type="submit">СТРАНИЦА ТОВАРА</button>
+                </form>
+                {% if request.user.is_authenticated %}
+                <form action="/category_product/{{n.group_product_id}}/{{n.pk}}/edit">
+                        <button style="height:20px;width:150px" type="submit">РЕДАКТИРОВАТЬ</button>
+                </form>
+
+                <form action="/category_product/{{n.group_product_id}}/{{n.pk}}/delete">
+                        <button style="height:20px;width:150px" type="submit">УДАЛИТЬ ТОВАР</button>
+                </form>
+                {% endif %}
+
+    <br>
+    <br>
+    {% endfor %}
+</body>
+</html>
