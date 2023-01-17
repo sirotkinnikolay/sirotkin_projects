@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import AuthorLoginView, StartView, AuthorLogoutView, \
     OneProductView, ProductRecordView, AllCategoryView, CategoryProductView, \
-    ProductUpdateView, ProductDeleteView, MoscowUpdateView, SpbUpdateView, CategoryRecordView
+    ProductUpdateView, ProductDeleteView, MoscowUpdateView, SpbUpdateView, CategoryRecordView, ProfitView
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -10,6 +10,7 @@ from django.conf.urls.static import static
 urlpatterns = [
                   path('', StartView.as_view(), name='start'),  # стартовая
                   path('login/', AuthorLoginView.as_view(), name='login'),  # для входа
+                  path('profit/', ProfitView.as_view(), name='profit'),
                   path('logout/', AuthorLogoutView.as_view(), name='logout'),  # для выхода
                   path('category_product/<int:group_product_id>/<int:pk>/', OneProductView.as_view(),
                        name='one_product'),  # одного товара

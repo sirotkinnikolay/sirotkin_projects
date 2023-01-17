@@ -2,9 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    {% for n in object_list %}
         <title>ТОВАРЫ</title>
-    {% endfor %}
 </head>
 <body>
         <form ALIGN='right' action="/">
@@ -13,6 +11,17 @@
         <form ALIGN='right' action="/category">
             <button style="height:20px;width:100px" type="submit">КАТЕГОРИИ </button>
         </form>
+            <form ALIGN='right' action="">
+            <button style="height:20px;width:100px" type="submit">СПИСОК</button>
+        </form>
+
+----------------------------------------------------------------------
+        <form method="GET" action="">
+            <input type="text" name="q" placeholder="ЧТО ИСКАТЬ">
+            <input class="button" type="submit" value="НАЙТИ">
+        </form>
+-----------------------------------------------------------------------
+
     {% for n in object_list %}
         <table cellspacing="2" cellpadding="5" bgcolor="blue">
             <tr bgcolor="yellow">

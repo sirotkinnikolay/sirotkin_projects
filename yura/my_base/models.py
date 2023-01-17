@@ -2,10 +2,25 @@ from django.contrib.auth.models import User
 from django.db import models
 import datetime
 from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ObjectDoesNotExist
+
+
+def function_profit(total_profit):
+    dates = datetime.datetime.now().strftime("%m/%Y")
+    try:
+        one = Profit.objects.get(date=dates)
+        one.profit += total_profit
+        one.save()
+    except ObjectDoesNotExist:
+        Profit.objects.create(profit=0, date=dates)
+        one = Profit.objects.get(date=dates)
+        one.profit += total_profit
+        one.save()
 
 
 class Profit(models.Model):
     profit = models.IntegerField(default=0, verbose_name='прибыль')
+    date = models.CharField(default='profit', max_length=30, verbose_name='месяц отчетности')
 
 
 class CategoryModel(models.Model):
@@ -28,7 +43,7 @@ class ProductModel(models.Model):
     price = models.IntegerField(default=0, verbose_name='цена')
     spd_count = models.IntegerField(default=0, verbose_name='колличество СПБ')
     mos_count = models.IntegerField(default=0, verbose_name='колличество МОСКВА')
-    file = models.FileField(default=None, upload_to='files/')
+    file = models.FileField(default='files/no_products.jpg', blank=True, null=True, upload_to='files/', verbose_name='фото товара')
 
     class Meta:
         indexes = [GinIndex(fields=['products'])]
@@ -48,18 +63,16 @@ class ProductModel(models.Model):
             new_val_msk = self.mos_count
             old_val_msk = self._loaded_values['mos_count']
             profit = self._loaded_values['price'] - self._loaded_values['price_zakupka']
+
             if old_val_spb != new_val_spb:
                 if new_val_spb < old_val_spb:
                     total_profit = (old_val_spb - new_val_spb) * profit
-                    one = Profit.objects.first()
-                    one.profit += total_profit
-                    one.save()
+                    function_profit(total_profit=total_profit)
+
             elif old_val_msk != new_val_msk:
                 if new_val_msk < old_val_msk:
                     total_profit = (old_val_msk - new_val_msk) * profit
-                    one = Profit.objects.first()
-                    one.profit += total_profit
-                    one.save()
+                    function_profit(total_profit=total_profit)
         super().save(*args, **kwargs)
 
     def __str__(self):
