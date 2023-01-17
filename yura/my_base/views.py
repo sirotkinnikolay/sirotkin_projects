@@ -72,7 +72,7 @@ class ProductUpdateView(UpdateView):
     """Представление для редактирования товара, редирект на страницу товара, который редактируем"""
     model = ProductModel
     template_name = 'product_edit.html'
-    fields = ['products', 'article', 'comment', 'price_zakupka', 'price', 'group_product']
+    fields = ['products', 'article', 'comment', 'price_zakupka', 'price', 'group_product', 'file']
 
     def get_success_url(self):
         pk = self.kwargs["pk"]

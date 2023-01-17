@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
         <title>ТОВАРЫ</title>
+    <style>
+    .field{font-weight:bold;}
+    .error{color:red;}
+    </style>
 </head>
 <body>
+
         <form ALIGN='right' action="/">
             <button style="height:20px;width:100px" type="submit">ГЛАВНАЯ </button>
         </form>
@@ -23,25 +28,25 @@
 -----------------------------------------------------------------------
 
     {% for n in object_list %}
-        <table cellspacing="2" cellpadding="5" bgcolor="blue">
-            <tr bgcolor="yellow">
-                <td width="500">ТОВАР:</td>
-                <td width="500">{{n.products}}</td>
+        <table cellspacing="2" cellpadding="2" bgcolor="black">
+            <tr bgcolor="yellow" >
+                <td width="300">ТОВАР:</td>
+                <td width="300">{{n.products}}</td>
             </tr>
             <tr bgcolor="white">
-                <td width="500">АРТИКУЛ:</td>
-                <td width="500">{{n.article}}</td>
+                <td width="300">АРТИКУЛ:</td>
+                <td width="300">{{n.article}}</td>
             </tr>
             <tr bgcolor="white">
-                <td width="100">ДАТА ДОБАВЛЕНИЯ:</td>
-                <td width="100">{{n.create_at}}</td>
+                <td width="300">ДАТА ДОБАВЛЕНИЯ:</td>
+                <td width="300">{{n.create_at}}</td>
             </tr>
         </table>
 
-        <table cellspacing="2" cellpadding="10" bgcolor="blue">
+        <table cellspacing="2" cellpadding="2" bgcolor="black">
             <tr bgcolor="white">
-                <td width="490">МОСКВА: ШТ.</td>
-                <td width="490">{{n.mos_count}}</td>
+                <td width="300">МОСКВА: ШТ.</td>
+                <td width="300">{{n.mos_count}}</td>
                 {% if request.user.is_authenticated %}
                 <td width="100"><form ALIGN='right' action="/category_product/{{n.group_product_id}}/{{n.pk}}/moscow">
                         <button style="height:25px;width:150px" type="submit">РЕДАКТИРОВАТЬ </button>
@@ -50,8 +55,8 @@
                 </td>
             </tr>
             <tr bgcolor="white">
-                <td width="100">САНКТ-ПЕТЕРБУРГ: ШТ.</td>
-                <td width="490">{{n.spd_count}}</td>
+                <td width="300">САНКТ-ПЕТЕРБУРГ: ШТ.</td>
+                <td width="300">{{n.spd_count}}</td>
                 {% if request.user.is_authenticated %}
                 <td width="100"><form ALIGN='right' action="/category_product/{{n.group_product_id}}/{{n.pk}}/spb">
                         <button style="height:25px;width:150px" type="submit">РЕДАКТИРОВАТЬ </button>
