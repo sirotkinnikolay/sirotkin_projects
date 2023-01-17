@@ -11,6 +11,15 @@ class StartView(TemplateView):
     """Представление стартовой страницы"""
     template_name = 'start.html'
 
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        query = 'подшипник'
+        one = ProductModel.objects.filter(products__icontains=query)
+        for i in one:
+            print(i.create_at)
+            print(i.products)
+        return self.render_to_response(context)
+
 
 class AuthorLogoutView(LogoutView):
     """Представление для выхода пользователя из учетной записи"""

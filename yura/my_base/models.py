@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 import datetime
+from django.contrib.postgres.indexes import GinIndex
 
 
 class Profit(models.Model):
@@ -28,6 +29,9 @@ class ProductModel(models.Model):
     spd_count = models.IntegerField(default=0, verbose_name='колличество СПБ')
     mos_count = models.IntegerField(default=0, verbose_name='колличество МОСКВА')
     file = models.FileField(default=None, upload_to='files/')
+
+    class Meta:
+        indexes = [GinIndex(fields=['products'])]
 
     @classmethod
     def from_db(cls, db, field_names, values):
