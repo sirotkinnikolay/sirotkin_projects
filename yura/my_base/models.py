@@ -39,8 +39,8 @@ class ProductModel(models.Model):
     article = models.CharField(default=' ', max_length=100, verbose_name='артикул')
     create_at = models.CharField(default=datetime.datetime.now().date(), max_length=30,  verbose_name='дата добавления')
     comment = models.CharField(default=' ', max_length=100, verbose_name='описание')
-    price_zakupka = models.IntegerField(default=0, verbose_name='цена закупочная')
-    price = models.IntegerField(default=0, verbose_name='цена')
+    price_zakupka = models.IntegerField(verbose_name='цена закупочная')
+    price = models.IntegerField(verbose_name='цена')
     spd_count = models.IntegerField(default=0, verbose_name='колличество СПБ')
     mos_count = models.IntegerField(default=0, verbose_name='колличество МОСКВА')
     file = models.FileField(default='files/no_products.jpg', blank=True, null=True, upload_to='files/', verbose_name='фото товара')
@@ -57,6 +57,7 @@ class ProductModel(models.Model):
         return instance
 
     def save(self, *args, **kwargs):
+        """Функция для отслеживания изменения значения полей 'spd_count' и 'mos_count'"""
         if not self._state.adding:
             new_val_spb = self.spd_count
             old_val_spb = self._loaded_values['spd_count']
