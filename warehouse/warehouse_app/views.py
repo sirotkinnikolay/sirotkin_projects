@@ -1,10 +1,12 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import TemplateView, UpdateView, DetailView, ListView, CreateView, DeleteView
 from .models import ProductModel, CategoryModel, Profit
+from .forms import *
 from django.urls import reverse_lazy, reverse
 from django.views import View
 import datetime
 from django.shortcuts import render
+from django.db.models import Count, Avg, Q
 
 
 class StartView(TemplateView):
@@ -118,3 +120,19 @@ class CategoryRecordView(CreateView):
     model = CategoryModel
     template_name = 'new_category.html'
     fields = '__all__'
+
+
+def statistics(request):
+    """Функция просмотра статиски проданных товаров в интервале дат, указанных пользователем"""
+    if request.method == 'GET':
+        form = DateForms()
+        return render(request, 'statistics.html', {'form': form})
+
+    if request.method == 'POST':
+        start_date = request.POST.get('first_date')
+        end_date = request.POST.get('second_date')
+        product_sale = ProductModel.objects.annotate(
+            num_sale=Count('statistics', filter=Q(statistics__created_at__range=
+                                                  [start_date, end_date]))).order_by('-num_sale')[:10]
+        form = DateForms()
+        return render(request, 'statistics.html', {'object_list': product_sale, 'form': form})

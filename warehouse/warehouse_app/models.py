@@ -57,7 +57,8 @@ class ProductModel(models.Model):
         return instance
 
     def save(self, *args, **kwargs):
-        """Функция для отслеживания изменения значения полей 'spd_count' и 'mos_count'"""
+        """Функция для отслеживания изменения значения полей 'spd_count' и 'mos_count',
+         формирования объекта модели статистики"""
         if not self._state.adding:
             new_val_spb = self.spd_count
             old_val_spb = self._loaded_values['spd_count']
@@ -68,14 +69,23 @@ class ProductModel(models.Model):
             if old_val_spb != new_val_spb:
                 if new_val_spb < old_val_spb:
                     total_profit = (old_val_spb - new_val_spb) * profit
+                    for _ in range(old_val_spb - new_val_spb):
+                        Statistics.objects.create(product_id=self.id)
                     function_profit(total_profit=total_profit)
 
             elif old_val_msk != new_val_msk:
                 if new_val_msk < old_val_msk:
                     total_profit = (old_val_msk - new_val_msk) * profit
+                    for _ in range(old_val_msk - new_val_msk):
+                        Statistics.objects.create(product_id=self.id)
                     function_profit(total_profit=total_profit)
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.products
+
+
+class Statistics(models.Model):
+    product = models.ForeignKey('ProductModel', on_delete=models.CASCADE, verbose_name='продукт', null=True)
+    created_at = models.DateField(auto_now_add=True)
 

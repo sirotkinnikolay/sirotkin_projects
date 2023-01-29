@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import AuthorLoginView, StartView, AuthorLogoutView, \
     OneProductView, ProductRecordView, AllCategoryView, CategoryProductView, \
-    ProductUpdateView, ProductDeleteView, MoscowUpdateView, SpbUpdateView, CategoryRecordView, ProfitView
+    ProductUpdateView, ProductDeleteView, MoscowUpdateView, SpbUpdateView, CategoryRecordView, ProfitView, statistics
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -27,6 +27,7 @@ urlpatterns = [
                   path('category_product/<int:group_product_id>/<int:pk>/spb/', SpbUpdateView.as_view(),
                        name='spb_edit'),  # редактирование количества на складе в СПБ
                   path('new_category/', CategoryRecordView.as_view(), name='new_category'),
+                  path('statistics/', statistics, name='statistics')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
